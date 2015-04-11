@@ -289,18 +289,15 @@ struct Config
 {
 	Config() : port(1080) { }
 	int port;
-	string password;
 };
 
 // Print an error message, usage, and then exit.
 void Usage(string errorMessage)
 {
 	cerr << errorMessage << "\n"
-"Usage: oddsocks [-config <oddsocks.cfg (default)>] [-password <password, default none>] [-port <port, default 1080>]\n"
-"Command line options superseed options in the config file.\n"
-"Supplying the password on the command line will allow other users "
-"on this machine to see it. Not recommended for shared environments!\n"
-"Config file is simply the port, and then a space and then the password (which can't contain spaces).\n";
+"Usage: oddsocks [-config <oddsocks.cfg (default)>] [-port <port, default 1080>]\n"
+"Command line options supersedes  options in the config file.\n"
+"Config file is simply the port.\n";
 	exit(1);
 }
 
@@ -308,7 +305,7 @@ Config ReadConfigFromFile(string filename)
 {
 	Config cfg;
 	ifstream input(filename.c_str());
-	input >> cfg.port >> cfg.password;
+	input >> cfg.port;
 	return cfg;
 }
 
@@ -331,10 +328,6 @@ Config ParseCommandLine(int argc, char* argv[])
 		{
 			configFile = value;
 		}
-		else if (key == "-password")
-		{
-			cfg.password = value;
-		}
 		else if (key == "-port")
 		{
 			cfg.port = StoI(value, -1);
@@ -350,8 +343,6 @@ Config ParseCommandLine(int argc, char* argv[])
 	// Try to read config file. Slightly dubious logic here!
 	// I should make this more clear.
 	Config cfgFromFile = ReadConfigFromFile(configFile);
-	if (cfg.password == "")
-		cfg.password = cfgFromFile.password;
 	if (cfg.port == -1)
 		cfg.port = cfgFromFile.port;
 	if (cfg.port == -1)
