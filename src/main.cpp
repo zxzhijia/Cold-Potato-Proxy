@@ -162,71 +162,7 @@ void* Connection(void* data)
 
 	// OK see if they are authenticated.
 	// If they aren't we'll deny the connection for port != 80, and send them to our auth page for port == 80.
-	if (!clientIsAuthenticated(client))
-	{
-//		cerr << "Client isn't authenticated." << endl;
-		if (port != 80)
-		{
-			// Return error.
-			inSock.send(hexBytes("050400") + hexBytes("01cb007101abab")); // Host unreachable. TODO: Auth error.
-			return NULL;
-		}
 
-		// Redirect to HTTP server.
-
-		// Say they are connected.
-//		cerr << "Saying they are connected." << endl;
-		inSock.send(hexBytes("050000") + hexBytes("01cb007101abab"));
-
-		// First receive the request until \r\n\r\n
-
-//		cerr << "Receiving request" << endl;
-		bytes req;
-		while (req.find("\r\n\r\n") == bytes::npos)
-		{
-			bytes newReq;
-			if (!inSock.receive(newReq))
-			{
-				cerr << "Couldn't receive request." << endl;
-				return NULL;
-			}
-			if (newReq.empty())
-			{
-				cerr << "Request EOF" << endl;
-				return NULL;
-			}
-			req.append(newReq);
-//			cerr << "Req: " << req << endl;
-		}
-
-		// Read the request. It is between the first and second spaces.
-
-		// TODO: check they actually did a GET and they use HTTP 1.1.
-		int firstSpace = req.find_first_of(' ', 0);
-		int secondSpace = req.find_first_of(' ', firstSpace+1);
-		string path = req.substr(firstSpace+1, secondSpace-firstSpace-1);
-		auto passhashPos = path.find("passhash");
-//		cerr << "Got path: (" << path << ")" << endl;
-		if (passhashPos != string::npos)
-		{
-			string passhash = path.substr(passhashPos + 9);
-			cerr << "Got passhash: (" << passhash << ")" << endl;
-			if (checkPassword(passhash))
-			{
-				updateClientAuthentication(client, true);
-				inSock.send(printAuthenticationSuccess());
-				return NULL;
-			}
-		}
-
-		inSock.send(printAuthenticationRequest(passhashPos != string::npos));
-
-		return NULL;
-	}
-
-
-	// They are authenticated. Just update that fact.
-	updateClientAuthentication(client, true);
 
 	// Try to connect.
 
