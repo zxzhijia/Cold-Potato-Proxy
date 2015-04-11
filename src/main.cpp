@@ -156,11 +156,7 @@ void* Connection(void* data)
 	unsigned char l = rawPort[1];
 	port = (h << 8) + l; // TODO: Check ports with bytes > 128
 
-//	cerr << "Port: " << port << endl;
-
-	// OK see if they are authenticated.
-	// If they aren't we'll deny the connection for port != 80, and send them to our auth page for port == 80.
-
+	//	cerr << "Port: " << port << endl;
 
 	// Try to connect.
 
