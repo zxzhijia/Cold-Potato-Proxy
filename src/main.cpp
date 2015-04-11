@@ -1,8 +1,6 @@
 #include "Socket.h"
 
-#include "Authentication.h"
 #include "Address.h"
-#include "HttpServer.h"
 #include "Common.h"
 
 #include <cstring>
@@ -372,9 +370,8 @@ int main(int argc, char* argv[])
 
 
 	int port = cfg.port;
-	setPassword(cfg.password);
 
-	cout << "Starting on port " << cfg.port << " with password " << cfg.password << endl;
+	cout << "Starting on port " << cfg.port << "." << endl;
 
 	int listenSock = socket(PF_INET, SOCK_STREAM, 0);
 	if (listenSock == -1)
