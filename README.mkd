@@ -34,3 +34,5 @@ it, but the best way would be for me to finish support for the `-config` option!
 ## Licence
 
 This is licensed under the terms of the GPL3.
+
+Join the chat at https://gitter.im/Tadimsky/Cold-Potato-Proxy
