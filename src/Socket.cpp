@@ -38,6 +38,10 @@ bool Socket::connect4(const bytes& ip, uint16_t port)
 	dest_addr.sin_port = htons(port);
 	dest_addr.sin_family = AF_INET;
 
+	char output[INET_ADDRSTRLEN];
+	inet_ntop(AF_INET, &(dest_addr.sin_addr), output, INET_ADDRSTRLEN);
+	std::cerr << "Connecting to " << output << ":" << port << std::endl;
+
 	if (::connect(fd, reinterpret_cast<sockaddr*>(&dest_addr), sizeof(dest_addr)) == -1)
 	{
 		::close(fd);
@@ -61,6 +65,10 @@ bool Socket::connect6(const bytes& ip, uint16_t port)
 	dest_addr.sin6_family = AF_INET;
 	dest_addr.sin6_flowinfo = 0; // No idea what these do.
 	dest_addr.sin6_scope_id = 0;
+
+	char output[INET6_ADDRSTRLEN];
+	inet_ntop(AF_INET6, &(dest_addr.sin6_port), output, INET6_ADDRSTRLEN);
+	std::cerr << "Connecting to " << output << ":" << port << std::endl;
 
 	if (::connect(fd, reinterpret_cast<sockaddr*>(&dest_addr), sizeof(dest_addr)) == -1)
 	{
