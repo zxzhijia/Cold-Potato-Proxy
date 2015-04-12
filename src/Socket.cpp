@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <netdb.h>
 #include <sstream>
+#include <iostream>
 
 Socket::Socket()
 {

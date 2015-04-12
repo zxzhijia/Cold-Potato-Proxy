@@ -104,7 +104,7 @@ void ProxyServer::Listen() {
 
 		// Create a new thread for the socket!
 		thread newConnection;
-		newConnection = thread(ProxyServer::processConnection, this, pDat);
+		newConnection = thread([&] { this->processConnection(pDat); });
 		newConnection.detach();
 	}
 

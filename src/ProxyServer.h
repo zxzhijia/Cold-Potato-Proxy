@@ -8,6 +8,8 @@
 #ifndef SRC_PROXYSERVER_H_
 #define SRC_PROXYSERVER_H_
 
+#include "Connection.h"
+
 
 class ProxyServer {
 private:
