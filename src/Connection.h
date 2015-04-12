@@ -13,17 +13,26 @@
 #include <thread>
 #include <memory.h>
 
+enum AddressType {
+	IPV4_ADDRESS,
+	IPV6_ADDRESS,
+	DOMAIN_ADDRESS
+};
+
 struct ConnectionData
 {
 	int socket; // The socket.
 	sockaddr_in client; // The address of the client.
 };
 
-enum AddressType {
-	IPV4_ADDRESS,
-	IPV6_ADDRESS,
-	DOMAIN_ADDRESS
+struct RequestDetails
+{
+	AddressType addressType;
+	std::string address;
+	int port;
 };
+
+
 
 class Connection {
 private:
@@ -50,7 +59,7 @@ private:
 	/**
 	 * Handles a client's connection request.
 	 */
-	bool handleRequest();
+	bool handleRequest(RequestDetails& request);
 
 public:
 	Connection(ConnectionData connection);

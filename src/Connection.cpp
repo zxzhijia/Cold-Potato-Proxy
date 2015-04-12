@@ -217,7 +217,7 @@ bool Connection::receiveGreeting() {
 	return true;
 }
 
-bool Connection::handleRequest() {
+bool Connection::handleRequest(RequestDetails& request) {
 	bytes header;
 
 	if (!mSock->receive(header, 4))
@@ -237,6 +237,7 @@ bool Connection::handleRequest() {
 	{
 		// Unsupported command.
 		cerr << "Unsupported command." << endl;
+		// TODO: fix this trash
 		mSock->send(hexBytes("050200010000000000"));
 		return false;
 	}
@@ -279,11 +280,20 @@ bool Connection::handleRequest() {
 
 	// Get the port.
 	bytes rawPort;
-	inSock.receive(rawPort, 2);
+	if (!mSock->receive(rawPort, 2)) {
+		cerr << "Could not read the port" << endl;
+		return false;
+	}
+
 	unsigned char h = rawPort[0];
 	unsigned char l = rawPort[1];
-	port = (h << 8) + l; // TODO: Check ports with bytes > 128
+	int port = (h << 8) + l;
 
+	request.port = port;
+	request.address = address;
+	request.addressType = addressType;
+
+	return true;
 }
 
 
