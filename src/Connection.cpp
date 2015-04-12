@@ -12,13 +12,13 @@
 
 using namespace std;
 
-Connection::Connection(ConnectionData connection) {
+Connection::Connection(ConnectionData* connection) {
 	mConnectionData = connection;
 }
 
 void Connection::handleConnection() {
-	int sock = mConnectionData.socket;
-	sockaddr_in client = mConnectionData.client;
+	int sock = mConnectionData->socket;
+	sockaddr_in client = mConnectionData->client;
 
 	mSock = std::make_shared<Socket>(sock);
 
@@ -297,5 +297,5 @@ void Connection::relayTraffic(std::shared_ptr<Socket> outSock) {
 }
 
 Connection::~Connection() {
-	// TODO Auto-generated destructor stub
+	//delete mConnectionData;
 }
