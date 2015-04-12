@@ -19,8 +19,6 @@ public:
 	ProxyServer(int port);
 	virtual ~ProxyServer();
 
-	void processConnection(ConnectionData* data);
-
 	void Listen();
 };
 

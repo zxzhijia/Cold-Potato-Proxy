@@ -17,7 +17,7 @@
 
 using namespace std;
 
-void ProxyServer::processConnection(ConnectionData* data)
+void processConnection(ConnectionData* data)
 {
 	// The socket.
 	ConnectionData* pDat = data;
@@ -29,7 +29,7 @@ void ProxyServer::processConnection(ConnectionData* data)
 		return;
 	}
 
-	Connection connection = Connection(data);
+	Connection connection(data);
 	connection.handleConnection();
 }
 
@@ -41,6 +41,9 @@ ProxyServer::ProxyServer(int port) {
 
 ProxyServer::~ProxyServer() {
 	// TODO Auto-generated destructor stub
+	if (mListenFD != -1) {
+		close(mListenFD);
+	}
 }
 
 void ProxyServer::Listen() {
@@ -101,7 +104,7 @@ void ProxyServer::Listen() {
 
 		// Create a new thread for the socket!
 		thread newConnection;
-		newConnection = thread([&] { this->processConnection(pDat); });
+		newConnection = thread(processConnection, pDat);
 		newConnection.detach();
 	}
 
