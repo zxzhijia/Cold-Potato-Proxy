@@ -32,123 +32,13 @@ void Connection::handleConnection() {
 	}
 
 	// Try to connect.
-
-	Socket outSock;
-
-	cerr << "Connecting " << endl;
-	bool connected = false;
-	switch (addressType)
-	{
-	case IPV4_ADDRESS:
-		cerr << "Connecting to ipv4 address: " <<
-(int)(unsigned char)address[0] << "." << (int)(unsigned char)address[1]
-<< "."
-<<
-(int)(unsigned char)address[2] << "." << (int)(unsigned char)address[4]
-<<
-":"
-<<
-port << endl;
-		connected = outSock.connect4(address, port);
-		break;
-	case IPV6_ADDRESS:
-		cerr << "Connecting to ipv6 address." << endl;
-		connected = outSock.connect6(address, port);
-		break;
-	case DOMAIN_ADDRESS:
-		cerr << "Connecting to " << address << endl;
-		connected = outSock.connect(address, port);
-		break;
-	default:
-		cerr << "Internal error! No connection type." << endl;
-		break;
-	}
-
-	// Send reply.
-
-	// This is wrong - the address & port should be the local address of outSock on the server.
-	// Not sure why the client would need this, so I'm just going for 0s.
-	if (connected)
-	{
-		cerr << "Connected!" << endl;
-		inSock.send(hexBytes("050000") + hexBytes("01cb007101abab"));
-	}
-	else
-	{
-		cerr << "Connection failed." << endl;
-		inSock.send(hexBytes("050400") + hexBytes("01cb007101abab")); // Host unreachable.
+	auto outSock = setupForwardConnection(request);
+	if (outSock == nullptr) {
 		return;
 	}
 
-	pollfd polls[2];
-	polls[0].fd = inSock.descriptor();
-	polls[0].events = POLLIN; // Listen for data availability.
-	polls[0].revents = 0;
-	polls[1].fd = outSock.descriptor(); // Will be the output socket.
-	polls[1].events = POLLIN;
-	polls[1].revents = 0;
+	this->relayTraffic(outSock);
 
-
-	while (true)
-	{
-		int ret = poll(polls, 2, 60000);
-		if (ret == -1)
-		{
-			cerr << strerror(errno) << endl;
-			break;
-		}
-		if (ret == 0)
-		{
-//			cerr << "No data (timeout)" << endl;
-			break;
-		}
-
-		if (polls[0].revents & POLLIN)
-		{
-			bytes data;
-			if (!inSock.receive(data))
-			{
-//				cerr << "Read error: " << strerror(errno) << endl;
-				break;
-			}
-			if (data.empty())
-			{
-//				cerr << "Read EOF." << endl;
-				break;
-			}
-
-			if (!outSock.send(data))
-			{
-//				cerr << "Write error: " << strerror(errno) << endl;
-			}
-		}
-
-		if (polls[1].revents & POLLIN)
-		{
-			bytes data;
-			if (!outSock.receive(data))
-			{
-//				cerr << "Read error: " << strerror(errno) << endl;
-				break;
-			}
-			if (data.empty())
-			{
-//				cerr << "Read EOF." << endl;
-				break;
-			}
-
-			if (!inSock.send(data))
-			{
-//				cerr << "Write error: " << strerror(errno) << endl;
-			}
-		}
-
-		if (polls[0].revents & (POLLHUP | POLLNVAL | POLLERR) || polls[1].revents & (POLLHUP | POLLNVAL | POLLERR))
-		{
-//			cerr << "Connection finished." << endl; // Could be an error...
-			break;
-		}
-	}
 }
 
 bool Connection::verifyVersion(bytes greeting) {
@@ -297,7 +187,114 @@ bool Connection::handleRequest(RequestDetails& request) {
 	return true;
 }
 
+std::shared_ptr<Socket> Connection::setupForwardConnection(const RequestDetails& request) {
+	bool connected = false;
 
+	auto outSock = std::make_shared<Socket>();
+
+	switch (request.addressType) {
+		case IPV4_ADDRESS:
+			connected = outSock->connect4(request.address, request.port);
+			break;
+		case IPV6_ADDRESS:
+			connected = outSock->connect6(request.address, request.port);
+			break;
+		case DOMAIN_ADDRESS:
+			connected = outSock->connect(request.address, request.port);
+			break;
+		default:
+			cerr << "No connection type specified." << endl;
+			break;
+	}
+
+	// Send reply.
+
+	// This is wrong - the address & port should be the local address of outSock on the server.
+	// Not sure why the client would need this, so I'm just going for 0s.
+	if (connected)
+	{
+		cerr << "Connected!" << endl;
+		mSock->send(hexBytes("050000") + hexBytes("01cb007101abab"));
+	}
+	else
+	{
+		cerr << "Connection failed." << endl;
+		mSock->send(hexBytes("050400") + hexBytes("01cb007101abab")); // Host unreachable.
+		return nullptr;
+	}
+	return outSock;
+}
+
+void Connection::relayTraffic(std::shared_ptr<Socket> outSock) {
+	pollfd polls[2];
+	polls[0].fd = mSock->descriptor();
+	polls[0].events = POLLIN; // Listen for data availability.
+	polls[0].revents = 0;
+	polls[1].fd = outSock->descriptor(); // Will be the output socket.
+	polls[1].events = POLLIN;
+	polls[1].revents = 0;
+
+	while (true)
+	{
+		int ret = poll(polls, 2, 60000);
+		if (ret == -1)
+		{
+			cerr << strerror(errno) << endl;
+			break;
+		}
+		if (ret == 0)
+		{
+//			cerr << "No data (timeout)" << endl;
+			break;
+		}
+
+		if (polls[0].revents & POLLIN)
+		{
+			bytes data;
+			if (!mSock->receive(data))
+			{
+//				cerr << "Read error: " << strerror(errno) << endl;
+				break;
+			}
+			if (data.empty())
+			{
+//				cerr << "Read EOF." << endl;
+				break;
+			}
+
+			if (!outSock->send(data))
+			{
+//				cerr << "Write error: " << strerror(errno) << endl;
+			}
+		}
+
+		if (polls[1].revents & POLLIN)
+		{
+			bytes data;
+			if (!outSock->receive(data))
+			{
+//				cerr << "Read error: " << strerror(errno) << endl;
+				break;
+			}
+			if (data.empty())
+			{
+//				cerr << "Read EOF." << endl;
+				break;
+			}
+
+			if (!mSock->send(data))
+			{
+//				cerr << "Write error: " << strerror(errno) << endl;
+			}
+		}
+
+		if ((polls[0].revents & (POLLHUP | POLLNVAL | POLLERR)) || (polls[1].revents & (POLLHUP | POLLNVAL | POLLERR)) )
+		{
+//			cerr << "Connection finished." << endl; // Could be an error...
+			break;
+		}
+	}
+}
 
 Connection::~Connection() {
 	// TODO Auto-generated destructor stub
