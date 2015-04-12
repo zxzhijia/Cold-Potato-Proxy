@@ -26,9 +26,10 @@ void Connection::handleConnection() {
 		return;
 	}
 
-
-
-	//	cerr << "Port: " << port << endl;
+	RequestDetails request;
+	if (!this->handleRequest(request)) {
+		return;
+	}
 
 	// Try to connect.
 
