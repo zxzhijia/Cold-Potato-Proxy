@@ -7,6 +7,7 @@
 
 #include "ProxyServer.h"
 #include "Socket.h"
+#include <thread>
 #include "string.h"
 #include "Address.h"
 #include "Common.h"
@@ -21,12 +22,12 @@ struct ThreadData
 	sockaddr_in client; // The address of the client.
 };
 
-void* Connection(void* data)
+void* Connection(ThreadData* data)
 {
 //	cerr << "Thread created" << endl;
 
 	// The socket.
-	ThreadData* pDat = reinterpret_cast<ThreadData*>(data);
+	ThreadData* pDat = data;
 
 	if (!pDat)
 	{
@@ -352,17 +353,9 @@ void ProxyServer::Listen() {
 		pDat->client = client_addr;
 
 		// Create a new thread for the socket!
-		pthread_t thread;
-		int ret = pthread_create(&thread, NULL, Connection, reinterpret_cast<void*>(pDat));
-		if (ret != 0)
-		{
-			cerr << "Error creating thread: " << ret << endl;
-			close(newSock);
-			delete pDat;
-			usleep(100000);
-			continue;
-		}
-		pthread_detach(thread);
+		thread newConnection;
+		newConnection = thread(Connection, pDat);
+		newConnection.detach();
 	}
 
 	close(mListenFD);
