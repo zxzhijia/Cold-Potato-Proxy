@@ -121,7 +121,9 @@ bool Connection::handleRequest(RequestDetails& request) {
 		return false;
 	}
 
-	this->verifySOCKSVersion(header[0]);
+	if (!this->verifySOCKSVersion(header[0])) {
+		return false;
+	}
 
 	// We only support TCP CONNECT, so fail other commands.
 	if (header[1] != Constants::SOCKS::Command::TCPConnection)
