@@ -37,7 +37,7 @@ struct RequestDetails
 class Connection {
 private:
 	ConnectionData* mConnectionData;
-	std::shared_ptr<Socket> mSock;
+	std::unique_ptr<Socket> mSock;
 
 	/**
 	 * Processes the greeting that a client sends when it connects to a SOCKS server.
@@ -54,7 +54,7 @@ private:
 	 * Checks the authentication methods that the client supports and determines whether
 	 * we will support the connection.
 	 */
-	bool checkAuthentication();
+	bool checkAuthentication(char methodCount);
 
 	/**
 	 * Handles a client's connection request.

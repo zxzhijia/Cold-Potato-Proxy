@@ -18,9 +18,9 @@ Connection::Connection(ConnectionData* connection) {
 
 void Connection::handleConnection() {
 	int sock = mConnectionData->socket;
-	sockaddr_in client = mConnectionData->client;
+	//sockaddr_in client = mConnectionData->client;
 
-	mSock = std::make_shared<Socket>(sock);
+	mSock = std::make_unique<Socket>(sock);
 
 	if (!this->receiveGreeting()) {
 		return;
@@ -56,13 +56,10 @@ bool Connection::verifySOCKSVersion(char version) {
 	return true;
 }
 
-bool Connection::checkAuthentication() {
-	bytes methods;
-	if (!mSock->receive(methods, 1)) {
-		return false;
-	}
+bool Connection::checkAuthentication(char methodCount) {
 
-	if (!mSock->receive(methods, methods[1]))
+	bytes methods;
+	if (!mSock->receive(methods, methodCount))
 	{
 		return false;
 	}
@@ -92,16 +89,17 @@ bool Connection::checkAuthentication() {
 bool Connection::receiveGreeting() {
 
 	bytes version;
-	if (!mSock->receive(version, 1)) {
+	if ((!mSock->receive(version, 2)) || (version.size() != 2) ) {
 		cerr << "Could not read the SOCKS version" << endl;
 		return false;
 	}
 
-	if (!this->verifyVersion(version)) {
+	if (!this->verifySOCKSVersion(version[0])) {
+		cout << hex << version[0] << version[1]<< endl;
 		return false;
 	}
 
-	if (!this->checkAuthentication()) {
+	if (!this->checkAuthentication(version[1])) {
 		return false;
 	}
 
