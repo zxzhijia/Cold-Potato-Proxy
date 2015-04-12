@@ -83,11 +83,13 @@ bool Socket::connect(const std::string& domain, uint16_t port)
 {
 	Socket::close();
 
+	std::cerr << "Connecting to " << domain << ":" << port << std::endl;
+
 	std::stringstream service;
 	service << port;
 
-	addrinfo* addrs = NULL;
-	int r = getaddrinfo(domain.c_str(), service.str().c_str(), NULL, &addrs);
+	addrinfo* addrs = nullptr;
+	int r = getaddrinfo(domain.c_str(), service.str().c_str(), nullptr, &addrs);
 	if (r != 0)
 	{
 		return false;
@@ -117,7 +119,6 @@ bool Socket::connect(const std::string& domain, uint16_t port)
 			return true;
 		}
 	}
-
 	return false;
 }
 
