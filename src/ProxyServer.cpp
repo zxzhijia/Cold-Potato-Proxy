@@ -29,10 +29,7 @@ void ProxyServer::processConnection(ConnectionData* data)
 		return;
 	}
 
-	Connection connection = Connection(*data);
-
-	delete data;
-
+	Connection connection = Connection(data);
 	connection.handleConnection();
 }
 
