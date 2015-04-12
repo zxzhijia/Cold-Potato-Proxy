@@ -36,7 +36,7 @@ struct RequestDetails
 
 class Connection {
 private:
-	ConnectionData mConnectionData;
+	ConnectionData* mConnectionData;
 	std::shared_ptr<Socket> mSock;
 
 	/**
@@ -66,7 +66,7 @@ private:
 	void relayTraffic(std::shared_ptr<Socket> outSock);
 
 public:
-	Connection(ConnectionData connection);
+	Connection(ConnectionData* connection);
 
 	void handleConnection();
 
