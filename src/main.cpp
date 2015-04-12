@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include "ProxyServer.h"
+#include "boost/asio.hpp"
 
 using namespace std;
 
