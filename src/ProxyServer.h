@@ -8,6 +8,7 @@
 #ifndef SRC_PROXYSERVER_H_
 #define SRC_PROXYSERVER_H_
 
+
 class ProxyServer {
 private:
 	int mPort;
@@ -15,6 +16,8 @@ private:
 public:
 	ProxyServer(int port);
 	virtual ~ProxyServer();
+
+	void processConnection(ConnectionData* data);
 
 	void Listen();
 };
