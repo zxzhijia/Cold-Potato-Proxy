@@ -22,13 +22,17 @@ std::string hexToString(const std::string& hex) {
 	output.reserve(len / 2);
 	for (size_t i = 0; i < len; i += 2)
 	{
-		char a = hex[i];
+		char a = toupper(hex[i]);
 		const char* p = std::lower_bound(lookupTable, lookupTable + 16, a);
-		if (*p != a) throw std::invalid_argument("not a hex digit");
+		if (*p != a) {
+			throw std::invalid_argument("not a hex digit");
+		}
 
-		char b = hex[i + 1];
+		char b = toupper(hex[i + 1]);
 		const char* q = std::lower_bound(lookupTable, lookupTable + 16, b);
-		if (*q != b) throw std::invalid_argument("not a hex digit");
+		if (*q != b) {
+			throw std::invalid_argument("not a hex digit");
+		}
 
 		output.push_back(((p - lookupTable) << 4) | (q - lookupTable));
 	}
