@@ -7,6 +7,7 @@
 
 #include "Connection.h"
 #include "Constants.h"
+#include "Util.h"
 
 #include <iostream>
 
@@ -76,12 +77,12 @@ bool Connection::checkAuthentication(char methodCount) {
 	{
 		cerr << "Client doesn't support unauthenticated sessions." << endl;
 		// socks V5, no auth methods
-		mSock->send(hexBytes("05FF"));
+		mSock->send(Constants::Messages::Auth::InvalidAuth);
 		return false;
 	}
 
 	//	cerr << "Using NoAuth" << endl;
-	mSock->send(hexBytes("0500"));
+	mSock->send(Constants::Messages::Auth::UseNoAuth);
 
 	return true;
 }
@@ -129,7 +130,7 @@ bool Connection::handleRequest(RequestDetails& request) {
 		// Unsupported command.
 		cerr << "Unsupported command." << endl;
 		// TODO: fix this trash
-		mSock->send(hexBytes("050200010000000000"));
+		mSock->send(Util::hexToString("050200010000000000"));
 		return false;
 	}
 	// header[2] is 0x00 - reserved
@@ -165,7 +166,7 @@ bool Connection::handleRequest(RequestDetails& request) {
 		default:
 			cerr << "Invalid address type." << endl;
 			// TODO: Fix this trash
-			mSock->send(hexBytes("050200010000000000"));
+			mSock->send(Util::hexToString("050200010000000000"));
 			return false;
 	}
 
@@ -214,12 +215,12 @@ std::shared_ptr<Socket> Connection::setupForwardConnection(const RequestDetails&
 	if (connected)
 	{
 		cerr << "Connected!" << endl;
-		mSock->send(hexBytes("050000") + hexBytes("01cb007101abab"));
+		mSock->send(Util::hexToString("050000") + Util::hexToString("01cb007101abab"));
 	}
 	else
 	{
 		cerr << "Connection failed." << endl;
-		mSock->send(hexBytes("050400") + hexBytes("01cb007101abab")); // Host unreachable.
+		mSock->send(Util::hexToString("050400") + Util::hexToString("01cb007101abab")); // Host unreachable.
 		return nullptr;
 	}
 	return outSock;
