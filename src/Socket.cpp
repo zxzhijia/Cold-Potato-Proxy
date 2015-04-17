@@ -6,6 +6,7 @@
 #include <netdb.h>
 #include <sstream>
 #include <iostream>
+#include "Util.h"
 
 Socket::Socket()
 {
@@ -241,11 +242,14 @@ int hexChar(char c)
 
 bytes hexBytes(const std::string& hb)
 {
-	bytes b;
+	bytes b = Util::hexToString(hb); //ss.str();
+	return b;
+	/*
 	for (unsigned int i = 0; i < hb.size()/2; ++i)
 	{
 		unsigned char c = (hexChar(hb[2*i]) << 4) | hexChar(hb[2*i+1]);
 		b.append(1, c);
 	}
 	return b;
+	*/
 }
