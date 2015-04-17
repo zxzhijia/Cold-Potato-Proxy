@@ -42,6 +42,14 @@ namespace Constants {
 			const std::string UseNoAuth = Util::hexToString("0500");
 		};
 
+		namespace Request {
+			const std::string InvalidConnection = Util::hexToString("0502");
+			const std::string InvalidAddressType = Util::hexToString("0508");
+			const std::string Blank = Util::hexToString("00");
+			// IPv4, no address, 0 for port
+			const std::string InvalidDestinationInformation = Util::hexToString("010000000000");
+		};
+
 	}
 
 };
