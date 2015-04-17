@@ -16,7 +16,8 @@
 enum AddressType {
 	IPV4_ADDRESS,
 	IPV6_ADDRESS,
-	DOMAIN_ADDRESS
+	DOMAIN_ADDRESS,
+	INVALID
 };
 
 struct ConnectionData
@@ -28,6 +29,7 @@ struct ConnectionData
 struct RequestDetails
 {
 	AddressType addressType;
+	int requestType;
 	std::string address;
 	int port;
 };

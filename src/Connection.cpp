@@ -5,6 +5,7 @@
  *      Author: jonno
  */
 
+#include <sstream>
 #include "Connection.h"
 #include "Constants.h"
 #include "Util.h"
@@ -127,12 +128,14 @@ bool Connection::handleRequest(RequestDetails& request) {
 	// We only support TCP CONNECT, so fail other commands.
 	if (header[1] != Constants::SOCKS::Command::TCPConnection)
 	{
-		// Unsupported command.
-		cerr << "Unsupported command." << endl;
-		// TODO: fix this trash
-		mSock->send(Util::hexToString("050200010000000000"));
+		cerr << "Unsupported command: " << hex << header[1] << endl;
+		// use this namespace for easier to read messages.
+		using namespace Constants::Messages::Request;
+		mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
+
 		return false;
 	}
+
 	// header[2] is 0x00 - reserved
 
 	bytes address;
@@ -164,9 +167,11 @@ bool Connection::handleRequest(RequestDetails& request) {
 			break;
 
 		default:
-			cerr << "Invalid address type." << endl;
-			// TODO: Fix this trash
-			mSock->send(Util::hexToString("050200010000000000"));
+			cerr << "Invalid address type: " << hex << header[3] << endl;
+			{
+				using namespace Constants::Messages::Request;
+				mSock->send(InvalidAddressType + Blank + InvalidDestinationInformation);
+			}
 			return false;
 	}
 
@@ -176,7 +181,7 @@ bool Connection::handleRequest(RequestDetails& request) {
 		cerr << "Could not read the port" << endl;
 		return false;
 	}
-
+	// horrible port decoding. oh well.
 	unsigned char h = rawPort[0];
 	unsigned char l = rawPort[1];
 	int port = (h << 8) + l;
