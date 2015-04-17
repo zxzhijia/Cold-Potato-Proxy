@@ -8,6 +8,9 @@
 #ifndef SRC_CONSTANTS_H_
 #define SRC_CONSTANTS_H_
 
+#include <string>
+#include "Util.h"
+
 namespace Constants {
 	namespace SOCKS {
 		namespace Version {
@@ -31,7 +34,16 @@ namespace Constants {
 			const int IPV4 = 4;
 			const int IPV6 = 16;
 		};
+	};
+
+	namespace Messages {
+		namespace Auth {
+			const std::string InvalidAuth = Util::hexToString("05FF");
+			const std::string UseNoAuth = Util::hexToString("0500");
+		};
+
 	}
+
 };
 
 #endif /* SRC_CONSTANTS_H_ */
