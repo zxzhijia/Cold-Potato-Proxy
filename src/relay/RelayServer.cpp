@@ -9,10 +9,8 @@
 using namespace std;
 
 void RelayServer::processConnection(ConnectionData *data) {
-    // The socket.
-    ConnectionData* pDat = data;
 
-    if (!pDat)
+    if (!data)
     {
         // Invalid data.
         cerr << "NULL thread data." << endl;
