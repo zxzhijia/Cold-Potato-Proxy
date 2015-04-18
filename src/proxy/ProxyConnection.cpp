@@ -138,7 +138,12 @@ bool ProxyConnection::handleRequest(AddressDetails & request) {
 
 	// header[2] is 0x00 - reserved
 
-	return this->readAddressInformation(request);
+	if (!this->readAddressInformation(request)) {
+		using namespace Constants::Messages::SOCKS::Request;
+		mSock->send(InvalidAddressType + Blank + InvalidDestinationInformation);
+		return false;
+	}
+	return true;
 }
 
 std::shared_ptr<Socket> ProxyConnection::setupForwardConnection(const AddressDetails & request) {
@@ -150,13 +155,15 @@ std::shared_ptr<Socket> ProxyConnection::setupForwardConnection(const AddressDet
 	// Not sure why the client would need this, so I'm just going for 0s.
 	if (outSock->connect(request))
 	{
+		using namespace Constants::Messages::SOCKS::Request;
 		cerr << "Connected!" << endl;
-		mSock->send(Util::hexToString("050000") + Util::hexToString("01cb007101abab"));
+		mSock->send(RequestGranted + Blank + Util::hexToString("01cb007101abab"));
 	}
 	else
 	{
+		using namespace Constants::Messages::SOCKS::Request;
 		cerr << "ProxyConnection failed." << endl;
-		mSock->send(Util::hexToString("050400") + Util::hexToString("01cb007101abab")); // Host unreachable.
+		mSock->send(HostUnreachable + Blank + Util::hexToString("01cb007101abab")); // Host unreachable.
 		return nullptr;
 	}
 	return outSock;
