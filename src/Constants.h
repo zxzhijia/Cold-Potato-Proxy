@@ -24,12 +24,17 @@ namespace Constants {
 			const int TCPConnection = 0x01;
 		};
 	};
+
 	namespace Relay {
 		namespace Version {
 			const int V1 = 0x01;
 		};
 		namespace Command {
 			const int TCPConnection = 0x01;
+		};
+		namespace Error {
+			const int InvalidConnection = 0x02;
+			const int InvalidAddressType = 0x08;
 		};
 	};
 	namespace IP {
@@ -57,6 +62,13 @@ namespace Constants {
 				const std::string Blank = Util::hexToString("00");
 				// IPv4, no address, 0 for port
 				const std::string InvalidDestinationInformation = Util::hexToString("010000000000");
+			};
+		};
+		namespace Relay {
+			namespace Request {
+				const std::string InvalidConnection = Util::hexToString("0102");
+				const std::string InvalidAddressType = Util::hexToString("0108");
+				const std::string Blank = Util::hexToString("00");
 			};
 		};
 	};
