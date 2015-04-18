@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include <proxy/ProxyConnection.h>
 #include "RelayServer.h"
+#include "RelayConnection.h"
 
 using namespace std;
 
@@ -17,6 +17,6 @@ void RelayServer::processConnection(ConnectionData *data) {
         return;
     }
 
-    ProxyConnection connection(data);
+    RelayConnection connection(data);
     connection.handleConnection();
 }

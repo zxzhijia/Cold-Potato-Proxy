@@ -65,9 +65,9 @@ bool RelayConnection::handleRequest(AddressDetails & request) {
 	{
 		cerr << "Unsupported command: " << hex << header[1] << endl;
 		// use this namespace for easier to read messages.
-		// using namespace Constants::Messages::SOCKS::Request;
-		// TODO: Process error messages better.
-		// mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
+		using namespace Constants::Messages::Relay::Request;
+		// TODO: Process error messages better. + anything else??
+		mSock->send(InvalidConnection +  Blank);
 
 		return false;
 	}
@@ -83,13 +83,14 @@ std::shared_ptr<Socket> RelayConnection::setupForwardConnection(const AddressDet
 	// Send reply.
 	if (outSock->connect(request))
 	{
+		
 		cerr << "Relay connected to destination!" << endl;
-		mSock->send(Util::hexToString("050000") + Util::hexToString("01cb007101abab"));
+		// mSock->send(Util::hexToString("050000") + Util::hexToString("01cb007101abab"));
 	}
 	else
 	{
 		cerr << "Relay could not connect to destination." << endl;
-		mSock->send(Util::hexToString("050400") + Util::hexToString("01cb007101abab")); // Host unreachable.
+		// mSock->send(Util::hexToString("050400") + Util::hexToString("01cb007101abab")); // Host unreachable.
 		return nullptr;
 	}
 	return outSock;
