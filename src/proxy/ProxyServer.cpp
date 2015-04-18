@@ -17,22 +17,6 @@
 
 using namespace std;
 
-void processConnection(ConnectionData* data)
-{
-	// The socket.
-	ConnectionData* pDat = data;
-
-	if (!pDat)
-	{
-		// Invalid data.
-		cerr << "NULL thread data." << endl;
-		return;
-	}
-
-	ProxyConnection connection(data);
-	connection.handleConnection();
-}
-
 void ProxyServer::processConnection(ConnectionData *data) {
 	// The socket.
 	ConnectionData* pDat = data;
