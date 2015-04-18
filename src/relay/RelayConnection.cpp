@@ -20,13 +20,8 @@ RelayConnection::RelayConnection(ConnectionData* connection) {
 
 void RelayConnection::handleConnection() {
 	int sock = mConnectionData->socket;
-	//sockaddr_in client = mConnectionData->client;
 
 	mSock = std::make_unique<Socket>(sock);
-
-	if (!this->receiveGreeting()) {
-		return;
-	}
 
 	RequestDetails request;
 	if (!this->handleRequest(request)) {
@@ -45,14 +40,14 @@ void RelayConnection::handleConnection() {
 
 bool RelayConnection::verifyVersion(bytes greeting) {
 	if (greeting.size() >= 1) {
-		return verifySOCKSVersion(greeting[0]);
+		return verifyVersion(greeting[0]);
 	}
 	return false;
 }
 
-bool RelayConnection::verifySOCKSVersion(char version) {
-	if (version != Constants::SOCKS::Version::V5) {
-		cerr << "Invalid SOCKS Version." << endl;
+bool RelayConnection::verifyVersion(char version) {
+	if (version != Constants::Relay::Version::V1) {
+		cerr << "Invalid relay version." << endl;
 		return false;
 	}
 	return true;
@@ -88,26 +83,6 @@ bool RelayConnection::checkAuthentication(char methodCount) {
 	return true;
 }
 
-bool RelayConnection::receiveGreeting() {
-
-	bytes version;
-	if ((!mSock->receive(version, 2)) || (version.size() != 2) ) {
-		cerr << "Could not read the SOCKS version" << endl;
-		return false;
-	}
-
-	if (!this->verifySOCKSVersion(version[0])) {
-		cout << hex << version[0] << version[1]<< endl;
-		return false;
-	}
-
-	if (!this->checkAuthentication(version[1])) {
-		return false;
-	}
-
-	return true;
-}
-
 bool RelayConnection::handleRequest(RequestDetails& request) {
 	bytes header;
 
@@ -121,17 +96,18 @@ bool RelayConnection::handleRequest(RequestDetails& request) {
 		return false;
 	}
 
-	if (!this->verifySOCKSVersion(header[0])) {
+	if (!this->verifyVersion(header[0])) {
 		return false;
 	}
 
 	// We only support TCP CONNECT, so fail other commands.
-	if (header[1] != Constants::SOCKS::Command::TCPConnection)
+	if (header[1] != Constants::Relay::Command::TCPConnection)
 	{
 		cerr << "Unsupported command: " << hex << header[1] << endl;
 		// use this namespace for easier to read messages.
 		using namespace Constants::Messages::Request;
-		mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
+		// TODO: Process error messages better.
+		// mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
 
 		return false;
 	}

@@ -22,13 +22,13 @@ private:
 	/**
 	 * Processes the greeting that a client sends when it connects to a SOCKS server.
 	 */
-	bool receiveGreeting();
+	bool receiveRequest();
 
 	/**
 	 * Verifies that the version that the client is requesting is allowed by our proxy server.
 	 */
 	bool verifyVersion(bytes version);
-	bool verifySOCKSVersion(char version);
+	bool verifyVersion(char version);
 
 	/**
 	 * Checks the authentication methods that the client supports and determines whether
