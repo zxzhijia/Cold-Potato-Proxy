@@ -6,7 +6,7 @@
 #define COLD_POTATO_PROXY_LISTENSERVER_H
 
 
-#include "ProxyConnection.h"
+#include "ConnectionData.h"
 
 class ListenServer {
 private:

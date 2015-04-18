@@ -6,6 +6,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <thread>
+#include <unistd.h>
 #include "ListenServer.h"
 
 using namespace std;
