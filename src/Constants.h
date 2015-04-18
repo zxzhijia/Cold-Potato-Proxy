@@ -24,6 +24,14 @@ namespace Constants {
 			const int TCPConnection = 0x01;
 		};
 	};
+	namespace Relay {
+		namespace Version {
+			const int V1 = 0x01;
+		};
+		namespace Command {
+			const int TCPConnection = 0x01;
+		};
+	};
 	namespace IP {
 		namespace Type {
 			const int IPV4 = 0x01;
