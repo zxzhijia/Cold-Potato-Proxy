@@ -24,9 +24,8 @@ struct ConnectionData
 struct RequestDetails
 {
     AddressType addressType;
-    int requestType;
     std::string address;
-    int port;
+    uint16_t port;
 };
 
 

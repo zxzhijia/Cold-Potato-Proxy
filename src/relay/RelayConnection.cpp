@@ -65,7 +65,7 @@ bool RelayConnection::handleRequest(RequestDetails& request) {
 	{
 		cerr << "Unsupported command: " << hex << header[1] << endl;
 		// use this namespace for easier to read messages.
-		using namespace Constants::Messages::SOCKS::Request;
+		// using namespace Constants::Messages::SOCKS::Request;
 		// TODO: Process error messages better.
 		// mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
 
@@ -76,6 +76,7 @@ bool RelayConnection::handleRequest(RequestDetails& request) {
 }
 
 std::shared_ptr<Socket> RelayConnection::setupForwardConnection(const RequestDetails& request) {
+	// this is the relay, so we connect to the actual destination
 	bool connected = false;
 
 	auto outSock = std::make_shared<Socket>();
