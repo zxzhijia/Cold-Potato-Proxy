@@ -8,7 +8,7 @@
 
 using namespace std;
 
-bool Connection::readAddressType(RequestDetails& rq) {
+bool Connection::readAddressInformation(RequestDetails &rq) {
     bytes address;
 
     AddressType addressType;

@@ -15,7 +15,14 @@ protected:
     ConnectionData* mConnectionData;
     std::unique_ptr<Socket> mSock;
 
-    bool readAddressType(RequestDetails& rq);
+    /**
+     * Reads in the address type, then it reads in the correct amount
+     * of data depending on the type of address it is.
+     * It then will read in the port information as well.
+     * Returns false if any error occurred.
+     * Returns true if all happened without problems.
+     */
+    bool readAddressInformation(RequestDetails &rq);
 
 public:
 
