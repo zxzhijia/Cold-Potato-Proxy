@@ -20,8 +20,6 @@ set(SOURCE_FILES
     src/Sha1.h
     src/Socket.cpp
     src/Socket.h
-    src/Tempo.cpp
-    src/Tempo.h
     src/Util.cpp
     src/Util.h)
 
