@@ -10,6 +10,7 @@
 #include <relay/RelayServer.h>
 #include <iomanip>
 #include "proxy/ProxyServer.h"
+#include "ConnectionData.h"
 #include "Util.h"
 
 using namespace std;
@@ -88,9 +89,18 @@ int main(int argc, char* argv[])
 	// -port <port>
 	Config cfg = ParseCommandLine(argc, argv);
 
+	AddressDetails t;
+	t.addressType = DOMAIN_ADDRESS;
+	t.address = "localhost";
+	t.port = 443;
+
+	stringstream ss;
+	ss >> t;
+	string pp = ss.str();
+
 
 	int port = cfg.port;
-	;
+
 	thread p([&] {
 		ProxyServer proxy = ProxyServer(port);
 		proxy.Listen();
