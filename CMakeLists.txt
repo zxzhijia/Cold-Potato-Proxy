@@ -10,10 +10,12 @@ set(SOURCE_FILES
     src/Common.h
     src/proxy/ProxyConnection.cpp
     src/proxy/ProxyConnection.h
-    src/Constants.h
-    src/main.cpp
     src/proxy/ProxyServer.cpp
     src/proxy/ProxyServer.h
+    src/Constants.h
+    src/main.cpp
+    src/relay/RelayConnection.cpp
+    src/relay/RelayConnection.h
     src/Sha1.cpp
     src/Sha1.h
     src/Socket.cpp
