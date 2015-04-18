@@ -14,7 +14,6 @@
 using namespace std;
 
 RelayConnection::RelayConnection(ConnectionData* connection) : Connection(connection) {
-
 }
 
 void RelayConnection::handleConnection() {
@@ -66,7 +65,7 @@ bool RelayConnection::handleRequest(RequestDetails& request) {
 	{
 		cerr << "Unsupported command: " << hex << header[1] << endl;
 		// use this namespace for easier to read messages.
-		using namespace Constants::Messages::Request;
+		using namespace Constants::Messages::SOCKS::Request;
 		// TODO: Process error messages better.
 		// mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
 

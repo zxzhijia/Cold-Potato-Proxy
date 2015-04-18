@@ -77,12 +77,12 @@ bool ProxyConnection::checkAuthentication(char methodCount) {
 	{
 		cerr << "Client doesn't support unauthenticated sessions." << endl;
 		// socks V5, no auth methods
-		mSock->send(Constants::Messages::Auth::InvalidAuth);
+		mSock->send(Constants::Messages::SOCKS::Auth::InvalidAuth);
 		return false;
 	}
 
 	//	cerr << "Using NoAuth" << endl;
-	mSock->send(Constants::Messages::Auth::UseNoAuth);
+	mSock->send(Constants::Messages::SOCKS::Auth::UseNoAuth);
 
 	return true;
 }
@@ -129,7 +129,7 @@ bool ProxyConnection::handleRequest(RequestDetails& request) {
 	{
 		cerr << "Unsupported command: " << hex << header[1] << endl;
 		// use this namespace for easier to read messages.
-		using namespace Constants::Messages::Request;
+		using namespace Constants::Messages::SOCKS::Request;
 		mSock->send(InvalidConnection +  Blank + InvalidDestinationInformation);
 
 		return false;

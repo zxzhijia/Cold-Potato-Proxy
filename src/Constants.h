@@ -45,21 +45,21 @@ namespace Constants {
 	};
 
 	namespace Messages {
-		namespace Auth {
-			const std::string InvalidAuth = Util::hexToString("05FF");
-			const std::string UseNoAuth = Util::hexToString("0500");
+		namespace SOCKS {
+			namespace Auth {
+				const std::string InvalidAuth = Util::hexToString("05FF");
+				const std::string UseNoAuth = Util::hexToString("0500");
+			};
+
+			namespace Request {
+				const std::string InvalidConnection = Util::hexToString("0502");
+				const std::string InvalidAddressType = Util::hexToString("0508");
+				const std::string Blank = Util::hexToString("00");
+				// IPv4, no address, 0 for port
+				const std::string InvalidDestinationInformation = Util::hexToString("010000000000");
+			};
 		};
-
-		namespace Request {
-			const std::string InvalidConnection = Util::hexToString("0502");
-			const std::string InvalidAddressType = Util::hexToString("0508");
-			const std::string Blank = Util::hexToString("00");
-			// IPv4, no address, 0 for port
-			const std::string InvalidDestinationInformation = Util::hexToString("010000000000");
-		};
-
-	}
-
+	};
 };
 
 #endif /* SRC_CONSTANTS_H_ */
