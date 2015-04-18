@@ -12,29 +12,7 @@
 #include "unistd.h"
 #include <thread>
 #include <memory.h>
-
-enum AddressType {
-	IPV4_ADDRESS,
-	IPV6_ADDRESS,
-	DOMAIN_ADDRESS,
-	INVALID
-};
-
-struct ConnectionData
-{
-	int socket; // The socket.
-	sockaddr_in client; // The address of the client.
-};
-
-struct RequestDetails
-{
-	AddressType addressType;
-	int requestType;
-	std::string address;
-	int port;
-};
-
-
+#include "../ConnectionData.h"
 
 class ProxyConnection {
 private:
