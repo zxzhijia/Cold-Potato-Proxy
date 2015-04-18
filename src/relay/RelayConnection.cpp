@@ -14,8 +14,8 @@
 
 using namespace std;
 
-RelayConnection::RelayConnection(ConnectionData* connection) {
-	mConnectionData = connection;
+RelayConnection::RelayConnection(ConnectionData* connection) : Connection(connection) {
+
 }
 
 void RelayConnection::handleConnection() {
@@ -35,14 +35,6 @@ void RelayConnection::handleConnection() {
 	}
 
 	this->relayTraffic(outSock);
-
-}
-
-bool RelayConnection::verifyVersion(bytes greeting) {
-	if (greeting.size() >= 1) {
-		return verifyVersion(greeting[0]);
-	}
-	return false;
 }
 
 bool RelayConnection::verifyVersion(char version) {
@@ -50,36 +42,6 @@ bool RelayConnection::verifyVersion(char version) {
 		cerr << "Invalid relay version." << endl;
 		return false;
 	}
-	return true;
-}
-
-bool RelayConnection::checkAuthentication(char methodCount) {
-
-	bytes methods;
-	if (!mSock->receive(methods, methodCount))
-	{
-		return false;
-	}
-
-	bool allowsNoAuth = false;
-
-	for (unsigned int i = 0; i < methods.size(); ++i)
-	{
-		if (methods[i] == Constants::SOCKS::Authentication::NoAuth)
-			allowsNoAuth = true;
-	}
-
-	if (!allowsNoAuth)
-	{
-		cerr << "Client doesn't support unauthenticated sessions." << endl;
-		// socks V5, no auth methods
-		mSock->send(Constants::Messages::Auth::InvalidAuth);
-		return false;
-	}
-
-	//	cerr << "Using NoAuth" << endl;
-	mSock->send(Constants::Messages::Auth::UseNoAuth);
-
 	return true;
 }
 

@@ -19,21 +19,9 @@ class RelayConnection : public  Connection {
 private:
 
 	/**
-	 * Processes the greeting that a client sends when it connects to a SOCKS server.
-	 */
-	bool receiveRequest();
-
-	/**
 	 * Verifies that the version that the client is requesting is allowed by our proxy server.
 	 */
-	bool verifyVersion(bytes version);
 	bool verifyVersion(char version);
-
-	/**
-	 * Checks the authentication methods that the client supports and determines whether
-	 * we will support the connection.
-	 */
-	bool checkAuthentication(char methodCount);
 
 	/**
 	 * Handles a client's connection request.

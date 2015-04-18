@@ -25,7 +25,9 @@ protected:
     bool readAddressInformation(RequestDetails &rq);
 
 public:
+    Connection(ConnectionData* connection);
 
+    virtual ~Connection();
 
 };
 

@@ -70,3 +70,11 @@ bool Connection::readAddressInformation(RequestDetails &rq) {
     rq.addressType = addressType;
     rq.port = port;
 }
+
+Connection::Connection(ConnectionData *connection) {
+    mConnectionData = connection;
+}
+
+Connection::~Connection() {
+    // TODO: stuff
+}

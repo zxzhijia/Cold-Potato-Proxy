@@ -12,12 +12,11 @@
 #include "unistd.h"
 #include <thread>
 #include <memory.h>
+#include <Connection.h>
 #include "../ConnectionData.h"
 
-class ProxyConnection {
+class ProxyConnection : public Connection {
 private:
-	ConnectionData* mConnectionData;
-	std::unique_ptr<Socket> mSock;
 
 	/**
 	 * Processes the greeting that a client sends when it connects to a SOCKS server.
