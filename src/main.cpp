@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
+#include <relay/RelayServer.h>
 #include "proxy/ProxyServer.h"
 
 using namespace std;
@@ -86,9 +87,19 @@ int main(int argc, char* argv[])
 	Config cfg = ParseCommandLine(argc, argv);
 
 	int port = cfg.port;
-	ProxyServer proxy = ProxyServer(port);
+	;
+	thread p([&] {
+		ProxyServer proxy = ProxyServer(port);
+		proxy.Listen();
+	});
 
-	proxy.Listen();
+	thread r([&] {
+		RelayServer relay = RelayServer(1090);
+		relay.Listen();
+	});
+
+	p.join();
+	r.join();
 
 	return 0;
 }
