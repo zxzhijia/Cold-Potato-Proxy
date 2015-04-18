@@ -4,8 +4,6 @@ project(Cold_Potato_Proxy)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 set(SOURCE_FILES
-    src/Address.cpp
-    src/Address.h
     src/Base64.cpp
     src/Base64.h
     src/Common.cpp
