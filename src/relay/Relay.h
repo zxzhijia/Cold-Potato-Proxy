@@ -6,14 +6,13 @@
 #define COLD_POTATO_PROXY_RELAY_H
 
 
-class Relay {
-private:
-    int mPort;
-    int mListenFD;
+#include <ListenServer.h>
 
+class Relay : public ListenServer{
 public:
-    Relay(int port);
-    void Listen();
+    Relay(int port) : ListenServer(port) {};
+
+    virtual void processConnection(ConnectionData *data) override;
 };
 
 
