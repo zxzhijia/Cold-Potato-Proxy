@@ -83,14 +83,15 @@ std::shared_ptr<Socket> RelayConnection::setupForwardConnection(const AddressDet
 	// Send reply.
 	if (outSock->connect(request))
 	{
-		
+		using namespace Constants::Messages::Relay;
 		cerr << "Relay connected to destination!" << endl;
-		// mSock->send(Util::hexToString("050000") + Util::hexToString("01cb007101abab"));
+		mSock->send(Request::RequestGranted + Request::Blank  + Util::hexToString("01cb007101abab"));
 	}
 	else
 	{
+		using namespace Constants::Messages::Relay;
 		cerr << "Relay could not connect to destination." << endl;
-		// mSock->send(Util::hexToString("050400") + Util::hexToString("01cb007101abab")); // Host unreachable.
+		mSock->send(Request::HostUnreachable + Request::Blank + Util::hexToString("01cb007101abab")); // Host unreachable.
 		return nullptr;
 	}
 	return outSock;
