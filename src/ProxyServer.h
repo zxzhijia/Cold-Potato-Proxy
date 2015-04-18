@@ -9,19 +9,14 @@
 #define SRC_PROXYSERVER_H_
 
 #include "Connection.h"
+#include "ListenServer.h"
 
 
-class ProxyServer {
+class ProxyServer : public ListenServer {
 private:
-	int mPort;
-	int mListenFD;
-
-	void processConnection(ConnectionData* data);
+	virtual void processConnection(ConnectionData* data);
 public:
-	ProxyServer(int port);
-	virtual ~ProxyServer();
-
-	void Listen();
+	ProxyServer(int port) : ListenServer(port) {};
 };
 
 #endif /* SRC_PROXYSERVER_H_ */
