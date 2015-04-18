@@ -17,10 +17,8 @@
 using namespace std;
 
 void ProxyServer::processConnection(ConnectionData *data) {
-	// The socket.
-	ConnectionData* pDat = data;
 
-	if (!pDat)
+	if (!data)
 	{
 		// Invalid data.
 		cerr << "NULL thread data." << endl;
