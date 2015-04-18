@@ -65,7 +65,7 @@ bool Connection::readAddressInformation(AddressDetails &rq) {
     // horrible port decoding. oh well.
     unsigned char h = (unsigned char)rawPort[0];
     unsigned char l = (unsigned char)rawPort[1];
-    int port = (h << 8) + l;
+    uint16_t port = (h << 8) + l;
 
     rq.address = address;
     rq.addressType = addressType;
