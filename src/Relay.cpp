@@ -9,7 +9,7 @@
 #include <chrono>
 #include <thread>
 #include "Relay.h"
-#include "Connection.h"
+#include "ProxyConnection.h"
 
 using namespace std;
 

@@ -13,7 +13,7 @@
 #include "Common.h"
 #include "unistd.h"
 #include <iostream>
-#include "Connection.h"
+#include "ProxyConnection.h"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ void processConnection(ConnectionData* data)
 		return;
 	}
 
-	Connection connection(data);
+	ProxyConnection connection(data);
 	connection.handleConnection();
 }
 
@@ -44,6 +44,6 @@ void ProxyServer::processConnection(ConnectionData *data) {
 		return;
 	}
 
-	Connection connection(data);
+	ProxyConnection connection(data);
 	connection.handleConnection();
 }

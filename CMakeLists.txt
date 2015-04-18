@@ -10,8 +10,8 @@ set(SOURCE_FILES
     src/Base64.h
     src/Common.cpp
     src/Common.h
-    src/Connection.cpp
-    src/Connection.h
+    src/ProxyConnection.cpp
+    src/ProxyConnection.h
     src/Constants.h
     src/main.cpp
     src/ProxyServer.cpp
