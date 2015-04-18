@@ -3,15 +3,8 @@
 //
 
 #include <iostream>
-#include <sys/socket.h>
-#include <string.h>
-#include <netinet/in.h>
-#include <chrono>
-#include <thread>
-#include <unistd.h>
 #include <proxy/ProxyConnection.h>
 #include "RelayServer.h"
-#include "ConnectionData.h"
 
 using namespace std;
 
