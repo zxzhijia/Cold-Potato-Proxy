@@ -100,6 +100,7 @@ bool ProxyConnection::receiveGreeting() {
 		return false;
 	}
 
+	// TODO: simplify logic
 	if (!this->checkAuthentication(version[1])) {
 		return false;
 	}

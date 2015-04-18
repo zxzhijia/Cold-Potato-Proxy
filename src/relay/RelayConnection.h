@@ -30,8 +30,6 @@ private:
 
 	std::shared_ptr<Socket> setupForwardConnection(const AddressDetails & request);
 
-	void relayTraffic(std::shared_ptr<Socket> outSock);
-
 public:
 	RelayConnection(ConnectionData* connection);
 
