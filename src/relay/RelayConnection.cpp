@@ -21,7 +21,7 @@ void RelayConnection::handleConnection() {
 
 	mSock = std::make_unique<Socket>(sock);
 
-	RequestDetails request;
+	AddressDetails request;
 	if (!this->handleRequest(request)) {
 		return;
 	}
@@ -43,7 +43,7 @@ bool RelayConnection::verifyVersion(char version) {
 	return true;
 }
 
-bool RelayConnection::handleRequest(RequestDetails& request) {
+bool RelayConnection::handleRequest(AddressDetails & request) {
 	bytes header;
 
 	if (!mSock->receive(header, 3))
@@ -75,7 +75,7 @@ bool RelayConnection::handleRequest(RequestDetails& request) {
 	return this->readAddressInformation(request);
 }
 
-std::shared_ptr<Socket> RelayConnection::setupForwardConnection(const RequestDetails& request) {
+std::shared_ptr<Socket> RelayConnection::setupForwardConnection(const AddressDetails & request) {
 	// this is the relay, so we connect to the actual destination
 	bool connected = false;
 

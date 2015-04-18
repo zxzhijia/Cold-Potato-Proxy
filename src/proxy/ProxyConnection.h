@@ -38,9 +38,9 @@ private:
 	/**
 	 * Handles a client's connection request.
 	 */
-	bool handleRequest(RequestDetails& request);
+	bool handleRequest(AddressDetails & request);
 
-	std::shared_ptr<Socket> setupForwardConnection(const RequestDetails& request);
+	std::shared_ptr<Socket> setupForwardConnection(const AddressDetails & request);
 public:
 	ProxyConnection(ConnectionData* connection);
 

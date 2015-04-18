@@ -22,7 +22,7 @@ protected:
      * Returns false if any error occurred.
      * Returns true if all happened without problems.
      */
-    bool readAddressInformation(RequestDetails &rq);
+    bool readAddressInformation(AddressDetails &rq);
 
     void relayTraffic(std::shared_ptr<Socket> outSock);
 

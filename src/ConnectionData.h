@@ -11,8 +11,7 @@
 enum AddressType {
     IPV4_ADDRESS,
     IPV6_ADDRESS,
-    DOMAIN_ADDRESS,
-    INVALID
+    DOMAIN_ADDRESS
 };
 
 struct ConnectionData
@@ -21,7 +20,7 @@ struct ConnectionData
     sockaddr_in client; // The address of the client.
 };
 
-struct RequestDetails
+struct AddressDetails
 {
     AddressType addressType;
     std::string address;

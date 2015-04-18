@@ -27,7 +27,7 @@ void ProxyConnection::handleConnection() {
 		return;
 	}
 
-	RequestDetails request;
+	AddressDetails request;
 	if (!this->handleRequest(request)) {
 		return;
 	}
@@ -107,7 +107,7 @@ bool ProxyConnection::receiveGreeting() {
 	return true;
 }
 
-bool ProxyConnection::handleRequest(RequestDetails& request) {
+bool ProxyConnection::handleRequest(AddressDetails & request) {
 	bytes header;
 
 	if (!mSock->receive(header, 3))
@@ -140,7 +140,7 @@ bool ProxyConnection::handleRequest(RequestDetails& request) {
 	return this->readAddressInformation(request);
 }
 
-std::shared_ptr<Socket> ProxyConnection::setupForwardConnection(const RequestDetails& request) {
+std::shared_ptr<Socket> ProxyConnection::setupForwardConnection(const AddressDetails & request) {
 	bool connected = false;
 
 	auto outSock = std::make_shared<Socket>();
