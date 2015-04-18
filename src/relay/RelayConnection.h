@@ -1,5 +1,5 @@
 /*
- * Connection.h
+ * RelayConnection.h
  *
  *  Created on: Apr 11, 2015
  *      Author: jonno

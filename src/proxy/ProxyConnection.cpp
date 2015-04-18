@@ -1,5 +1,5 @@
 /*
- * Connection.cpp
+ * ProxyConnection.cpp
  *
  *  Created on: Apr 11, 2015
  *      Author: jonno
@@ -8,7 +8,6 @@
 #include <sstream>
 #include "ProxyConnection.h"
 #include "Constants.h"
-#include "Util.h"
 
 #include <iostream>
 

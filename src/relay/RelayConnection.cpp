@@ -1,5 +1,5 @@
 /*
- * Connection.cpp
+ * RelayConnection.cpp
  *
  *  Created on: Apr 11, 2015
  *      Author: jonno
@@ -8,7 +8,6 @@
 #include <sstream>
 #include "RelayConnection.h"
 #include "Constants.h"
-#include "Util.h"
 
 #include <iostream>
 
