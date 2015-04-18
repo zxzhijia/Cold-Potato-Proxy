@@ -8,8 +8,9 @@
 #include <netinet/in.h>
 #include <chrono>
 #include <thread>
+#include <unistd.h>
 #include "Relay.h"
-#include "ProxyConnection.h"
+#include "ConnectionData.h"
 
 using namespace std;
 
