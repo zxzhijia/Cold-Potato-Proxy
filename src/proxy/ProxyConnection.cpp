@@ -8,6 +8,7 @@
 #include <sstream>
 #include "ProxyConnection.h"
 #include "Constants.h"
+#include "RelayForwarder.h"
 
 #include <iostream>
 
@@ -150,6 +151,8 @@ std::shared_ptr<Socket> ProxyConnection::setupForwardConnection(const AddressDet
 	auto outSock = std::make_shared<Socket>();
 
 	// Send reply.
+	RelayForwarder rf(request);
+	rf.connect();
 
 	// This is wrong - the address & port should be the local address of outSock on the server.
 	// Not sure why the client would need this, so I'm just going for 0s.
