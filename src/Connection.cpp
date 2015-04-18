@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <string.h>
 #include "Connection.h"
 #include "Constants.h"
 
@@ -69,6 +70,77 @@ bool Connection::readAddressInformation(RequestDetails &rq) {
     rq.address = address;
     rq.addressType = addressType;
     rq.port = port;
+}
+
+void Connection::relayTraffic(std::shared_ptr<Socket> outSock) {
+    pollfd polls[2];
+    polls[0].fd = mSock->descriptor();
+    polls[0].events = POLLIN; // Listen for data availability.
+    polls[0].revents = 0;
+    polls[1].fd = outSock->descriptor(); // Will be the output socket.
+    polls[1].events = POLLIN;
+    polls[1].revents = 0;
+
+    while (true)
+    {
+        int ret = poll(polls, 2, 60000);
+        if (ret == -1)
+        {
+            cerr << strerror(errno) << endl;
+            break;
+        }
+        if (ret == 0)
+        {
+//			cerr << "No data (timeout)" << endl;
+            break;
+        }
+
+        if (polls[0].revents & POLLIN)
+        {
+            bytes data;
+            if (!mSock->receive(data))
+            {
+//				cerr << "Read error: " << strerror(errno) << endl;
+                break;
+            }
+            if (data.empty())
+            {
+//				cerr << "Read EOF." << endl;
+                break;
+            }
+
+            if (!outSock->send(data))
+            {
+//				cerr << "Write error: " << strerror(errno) << endl;
+            }
+        }
+
+        if (polls[1].revents & POLLIN)
+        {
+            bytes data;
+            if (!outSock->receive(data))
+            {
+//				cerr << "Read error: " << strerror(errno) << endl;
+                break;
+            }
+            if (data.empty())
+            {
+//				cerr << "Read EOF." << endl;
+                break;
+            }
+
+            if (!mSock->send(data))
+            {
+//				cerr << "Write error: " << strerror(errno) << endl;
+            }
+        }
+
+        if ((polls[0].revents & (POLLHUP | POLLNVAL | POLLERR)) || (polls[1].revents & (POLLHUP | POLLNVAL | POLLERR)) )
+        {
+//			cerr << "Connection finished." << endl; // Could be an error...
+            break;
+        }
+    }
 }
 
 Connection::Connection(ConnectionData *connection) {

@@ -41,9 +41,6 @@ private:
 	bool handleRequest(RequestDetails& request);
 
 	std::shared_ptr<Socket> setupForwardConnection(const RequestDetails& request);
-
-	void relayTraffic(std::shared_ptr<Socket> outSock);
-
 public:
 	ProxyConnection(ConnectionData* connection);
 

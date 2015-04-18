@@ -24,6 +24,8 @@ protected:
      */
     bool readAddressInformation(RequestDetails &rq);
 
+    void relayTraffic(std::shared_ptr<Socket> outSock);
+
 public:
     Connection(ConnectionData* connection);
 
