@@ -194,3 +194,25 @@ bool Socket::originalDestination(uint32_t& ip, uint16_t& port) const
 }
 #endif
 
+bool Socket::connect(const AddressDetails &a) {
+	bool connected = false;
+
+	switch (a.addressType) {
+		case IPV4_ADDRESS:
+			connected = this->connect4(a.address, a.port);
+			break;
+		case IPV6_ADDRESS:
+			connected = this->connect6(a.address, a.port);
+			break;
+		case DOMAIN_ADDRESS:
+			connected = this->connect(a.address, a.port);
+			break;
+		default:
+			std::cerr << "No connection type specified." << std::endl;
+			// send some error message
+
+			break;
+	}
+
+	return connected;
+}

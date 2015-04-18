@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <limits.h> // netfilter_ipv4 should include this!
+#include "ConnectionData.h"
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -26,15 +27,17 @@ class Socket
 public:
 	// Create a new TCP socket.
 	Socket();
+
 	// Construct this from a socket returned by accept().
 	explicit Socket(int sock);
 	virtual ~Socket();
 
 	// Close existing connections, and connect to a IPv4 (4 bytes) or IPv6 (16 bytes).
-	// TODO: This could automatically determine whether to use IPv4 or 6 by the length.
 	virtual bool connect4(const bytes& ip, uint16_t port);
 	virtual bool connect6(const bytes& ip, uint16_t port);
 	virtual bool connect(const std::string& domain, uint16_t port);
+
+	virtual bool connect(const AddressDetails& a);
 
 	// Send some data. Sets errno on failure and returns false.
 	virtual bool send(const bytes& d);
