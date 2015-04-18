@@ -1,8 +1,8 @@
 # Commands for interface between Relay and Proxy
 
 Relay Connection:
-| Version | Connection | Address Type | Address  |
-|    1B   |    1B	   |      1B	  | Variable |
+| Version | Connection | Blank | Address Type | Address  | Port |
+|    1B   |    1B	   |   1B  |      1B      | Variable |  2B  |
 
 Response:
 Version	Status	Connection ID
