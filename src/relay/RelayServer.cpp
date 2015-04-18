@@ -10,12 +10,12 @@
 #include <thread>
 #include <unistd.h>
 #include <proxy/ProxyConnection.h>
-#include "Relay.h"
+#include "RelayServer.h"
 #include "ConnectionData.h"
 
 using namespace std;
 
-void Relay::processConnection(ConnectionData *data) {
+void RelayServer::processConnection(ConnectionData *data) {
     // The socket.
     ConnectionData* pDat = data;
 

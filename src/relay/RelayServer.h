@@ -8,9 +8,9 @@
 
 #include <ListenServer.h>
 
-class Relay : public ListenServer{
+class RelayServer : public ListenServer{
 public:
-    Relay(int port) : ListenServer(port) {};
+    RelayServer(int port) : ListenServer(port) {};
 
     virtual void processConnection(ConnectionData *data) override;
 };
