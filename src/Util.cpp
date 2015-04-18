@@ -55,7 +55,12 @@ std::string stringToHex(const std::string& str) {
 
 
 AddressDetails getBestRelay(const AddressDetails &destination) {
-	return AddressDetails();
+	AddressDetails response;
+	response.address = "localhost";
+	response.port = 1090;
+	response.addressType = DOMAIN_ADDRESS;
+	
+	return response;
 }
 } /* namespace Util */
 
