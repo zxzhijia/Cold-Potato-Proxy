@@ -8,7 +8,9 @@
 #include <iostream>
 #include <fstream>
 #include <relay/RelayServer.h>
+#include <iomanip>
 #include "proxy/ProxyServer.h"
+#include "Util.h"
 
 using namespace std;
 
@@ -85,6 +87,7 @@ int main(int argc, char* argv[])
 	// -password <pw>
 	// -port <port>
 	Config cfg = ParseCommandLine(argc, argv);
+
 
 	int port = cfg.port;
 	;

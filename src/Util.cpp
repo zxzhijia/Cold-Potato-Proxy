@@ -59,7 +59,7 @@ AddressDetails getBestRelay(const AddressDetails &destination) {
 	response.address = "localhost";
 	response.port = 1090;
 	response.addressType = DOMAIN_ADDRESS;
-	
+
 	return response;
 }
 } /* namespace Util */

@@ -13,6 +13,7 @@ set(SOURCE_FILES
     src/proxy/ProxyServer.cpp
     src/proxy/ProxyServer.h
     src/Constants.h
+    src/ConnectionData.cpp
     src/main.cpp
     src/relay/RelayConnection.cpp
     src/relay/RelayConnection.h
@@ -27,6 +28,6 @@ include_directories(src)
 
 find_package (Threads)
 
-add_executable(Cold_Potato_Proxy ${SOURCE_FILES} src/relay/RelayServer.cpp src/relay/RelayServer.h src/ListenServer.cpp src/ListenServer.h src/ConnectionData.h src/Connection.cpp src/Connection.h)
+add_executable(Cold_Potato_Proxy ${SOURCE_FILES} src/relay/RelayServer.cpp src/relay/RelayServer.h src/ListenServer.cpp src/ListenServer.h src/ConnectionData.h src/Connection.cpp src/Connection.h src/proxy/RelayForwarder.cpp src/proxy/RelayForwarder.h)
 
 target_link_libraries (Cold_Potato_Proxy ${CMAKE_THREAD_LIBS_INIT})
