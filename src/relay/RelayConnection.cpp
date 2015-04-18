@@ -77,32 +77,15 @@ bool RelayConnection::handleRequest(AddressDetails & request) {
 
 std::shared_ptr<Socket> RelayConnection::setupForwardConnection(const AddressDetails & request) {
 	// this is the relay, so we connect to the actual destination
-	bool connected = false;
 
 	auto outSock = std::make_shared<Socket>();
 
-	switch (request.addressType) {
-		case IPV4_ADDRESS:
-			connected = outSock->connect4(request.address, request.port);
-			break;
-		case IPV6_ADDRESS:
-			connected = outSock->connect6(request.address, request.port);
-			break;
-		case DOMAIN_ADDRESS:
-			connected = outSock->connect(request.address, request.port);
-			break;
-		default:
-			cerr << "No connection type specified." << endl;
-			// send some error message
-
-			break;
-	}
 
 	// Send reply.
 
 	// This is wrong - the address & port should be the local address of outSock on the server.
 	// Not sure why the client would need this, so I'm just going for 0s.
-	if (connected)
+	if (outSock->connect(request))
 	{
 		cerr << "Connected!" << endl;
 		mSock->send(Util::hexToString("050000") + Util::hexToString("01cb007101abab"));
