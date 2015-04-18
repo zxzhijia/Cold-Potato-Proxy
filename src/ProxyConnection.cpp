@@ -6,7 +6,7 @@
  */
 
 #include <sstream>
-#include "Connection.h"
+#include "ProxyConnection.h"
 #include "Constants.h"
 #include "Util.h"
 
@@ -14,11 +14,11 @@
 
 using namespace std;
 
-Connection::Connection(ConnectionData* connection) {
+ProxyConnection::ProxyConnection(ConnectionData* connection) {
 	mConnectionData = connection;
 }
 
-void Connection::handleConnection() {
+void ProxyConnection::handleConnection() {
 	int sock = mConnectionData->socket;
 	//sockaddr_in client = mConnectionData->client;
 
@@ -43,14 +43,14 @@ void Connection::handleConnection() {
 
 }
 
-bool Connection::verifyVersion(bytes greeting) {
+bool ProxyConnection::verifyVersion(bytes greeting) {
 	if (greeting.size() >= 1) {
 		return verifySOCKSVersion(greeting[0]);
 	}
 	return false;
 }
 
-bool Connection::verifySOCKSVersion(char version) {
+bool ProxyConnection::verifySOCKSVersion(char version) {
 	if (version != Constants::SOCKS::Version::V5) {
 		cerr << "Invalid SOCKS Version." << endl;
 		return false;
@@ -58,7 +58,7 @@ bool Connection::verifySOCKSVersion(char version) {
 	return true;
 }
 
-bool Connection::checkAuthentication(char methodCount) {
+bool ProxyConnection::checkAuthentication(char methodCount) {
 
 	bytes methods;
 	if (!mSock->receive(methods, methodCount))
@@ -88,7 +88,7 @@ bool Connection::checkAuthentication(char methodCount) {
 	return true;
 }
 
-bool Connection::receiveGreeting() {
+bool ProxyConnection::receiveGreeting() {
 
 	bytes version;
 	if ((!mSock->receive(version, 2)) || (version.size() != 2) ) {
@@ -108,7 +108,7 @@ bool Connection::receiveGreeting() {
 	return true;
 }
 
-bool Connection::handleRequest(RequestDetails& request) {
+bool ProxyConnection::handleRequest(RequestDetails& request) {
 	bytes header;
 
 	if (!mSock->receive(header, 4))
@@ -193,7 +193,7 @@ bool Connection::handleRequest(RequestDetails& request) {
 	return true;
 }
 
-std::shared_ptr<Socket> Connection::setupForwardConnection(const RequestDetails& request) {
+std::shared_ptr<Socket> ProxyConnection::setupForwardConnection(const RequestDetails& request) {
 	bool connected = false;
 
 	auto outSock = std::make_shared<Socket>();
@@ -226,14 +226,14 @@ std::shared_ptr<Socket> Connection::setupForwardConnection(const RequestDetails&
 	}
 	else
 	{
-		cerr << "Connection failed." << endl;
+		cerr << "ProxyConnection failed." << endl;
 		mSock->send(Util::hexToString("050400") + Util::hexToString("01cb007101abab")); // Host unreachable.
 		return nullptr;
 	}
 	return outSock;
 }
 
-void Connection::relayTraffic(std::shared_ptr<Socket> outSock) {
+void ProxyConnection::relayTraffic(std::shared_ptr<Socket> outSock) {
 	pollfd polls[2];
 	polls[0].fd = mSock->descriptor();
 	polls[0].events = POLLIN; // Listen for data availability.
@@ -298,12 +298,12 @@ void Connection::relayTraffic(std::shared_ptr<Socket> outSock) {
 
 		if ((polls[0].revents & (POLLHUP | POLLNVAL | POLLERR)) || (polls[1].revents & (POLLHUP | POLLNVAL | POLLERR)) )
 		{
-//			cerr << "Connection finished." << endl; // Could be an error...
+//			cerr << "ProxyConnection finished." << endl; // Could be an error...
 			break;
 		}
 	}
 }
 
-Connection::~Connection() {
+ProxyConnection::~ProxyConnection() {
 	//delete mConnectionData;
 }

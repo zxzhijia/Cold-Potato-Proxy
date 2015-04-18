@@ -36,7 +36,7 @@ struct RequestDetails
 
 
 
-class Connection {
+class ProxyConnection {
 private:
 	ConnectionData* mConnectionData;
 	std::unique_ptr<Socket> mSock;
@@ -68,12 +68,12 @@ private:
 	void relayTraffic(std::shared_ptr<Socket> outSock);
 
 public:
-	Connection(ConnectionData* connection);
+	ProxyConnection(ConnectionData* connection);
 
 	void handleConnection();
 
 
-	virtual ~Connection();
+	virtual ~ProxyConnection();
 };
 
 
