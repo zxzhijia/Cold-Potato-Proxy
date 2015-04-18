@@ -10,7 +10,7 @@
 
 using namespace std;
 
-std::ostream &operator>>(std::ostream &output, AddressDetails &address) {
+std::ostream &operator<<(std::ostream &output, AddressDetails &address) {
     switch (address.addressType) {
         case IPV4_ADDRESS:
             output << Util::hexToString("01");

@@ -18,7 +18,7 @@ private:
     AddressDetails mRelay;
     AddressDetails mFinalDestination;
 
-    bool sendRequest(const AddressDetails& dest);
+    bool sendRequest(AddressDetails& dest);
 
 
 public:

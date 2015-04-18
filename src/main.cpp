@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 	t.port = 443;
 
 	stringstream ss;
-	ss >> t;
+	ss << t;
 	string pp = ss.str();
 
 

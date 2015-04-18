@@ -28,7 +28,7 @@ public:
     std::string address;
     uint16_t port;
 
-    friend std::ostream &operator>>( std::ostream  &output, AddressDetails &address );
+    friend std::ostream &operator<<( std::ostream  &output, AddressDetails &address );
 };
 
 
