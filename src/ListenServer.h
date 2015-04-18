@@ -6,6 +6,8 @@
 #define COLD_POTATO_PROXY_LISTENSERVER_H
 
 
+#include "Connection.h"
+
 class ListenServer {
 private:
     int mPort;
@@ -14,7 +16,7 @@ private:
 public:
     ListenServer(int port);
 
-    virtual void processConnection() = 0;
+    virtual void processConnection(ConnectionData *data) = 0;
 
     virtual void Listen();
 };
