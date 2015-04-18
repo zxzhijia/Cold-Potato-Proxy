@@ -93,7 +93,7 @@ void ProxyServer::Listen() {
 			// Check if ctrl-c was pressed.
 			if (errno == EINTR)
 				break;
-			usleep(100000); // Just in case.
+			std::this_thread::sleep_for(std::chrono::microseconds(100000)); // Just in case.
 			continue;
 		}
 
@@ -104,9 +104,26 @@ void ProxyServer::Listen() {
 
 		// Create a new thread for the socket!
 		thread newConnection;
-		newConnection = thread(processConnection, pDat);
+		newConnection = thread([=] {
+			this->processConnection(pDat);
+		});
 		newConnection.detach();
 	}
 
 	close(mListenFD);
+}
+
+void ProxyServer::processConnection(ConnectionData *data) {
+	// The socket.
+	ConnectionData* pDat = data;
+
+	if (!pDat)
+	{
+		// Invalid data.
+		cerr << "NULL thread data." << endl;
+		return;
+	}
+
+	Connection connection(data);
+	connection.handleConnection();
 }

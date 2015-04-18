@@ -29,6 +29,6 @@ include_directories(src)
 
 find_package (Threads)
 
-add_executable(Cold_Potato_Proxy ${SOURCE_FILES})
+add_executable(Cold_Potato_Proxy ${SOURCE_FILES} src/Relay.cpp src/Relay.h src/ListenServer.cpp src/ListenServer.h)
 
 target_link_libraries (Cold_Potato_Proxy ${CMAKE_THREAD_LIBS_INIT})

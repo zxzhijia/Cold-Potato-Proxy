@@ -210,6 +210,8 @@ std::shared_ptr<Socket> Connection::setupForwardConnection(const RequestDetails&
 			break;
 		default:
 			cerr << "No connection type specified." << endl;
+			// send some error message
+
 			break;
 	}
 

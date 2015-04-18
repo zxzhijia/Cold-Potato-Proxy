@@ -15,6 +15,8 @@ class ProxyServer {
 private:
 	int mPort;
 	int mListenFD;
+
+	void processConnection(ConnectionData* data);
 public:
 	ProxyServer(int port);
 	virtual ~ProxyServer();

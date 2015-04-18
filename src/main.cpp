@@ -86,7 +86,6 @@ int main(int argc, char* argv[])
 	// -port <port>
 	Config cfg = ParseCommandLine(argc, argv);
 
-
 	int port = cfg.port;
 	ProxyServer proxy = ProxyServer(port);
 

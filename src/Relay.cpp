@@ -76,7 +76,7 @@ void Relay::Listen() {
 
         // Create a new thread for the socket!
         thread newConnection;
-        newConnection = thread(processConnection, pDat);
+        //newConnection = thread(processConnection, pDat);
         newConnection.detach();
     }
 
