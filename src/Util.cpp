@@ -54,5 +54,8 @@ std::string stringToHex(const std::string& str) {
 }
 
 
+AddressDetails getBestRelay(const AddressDetails &destination) {
+	return AddressDetails();
+}
 } /* namespace Util */
 
