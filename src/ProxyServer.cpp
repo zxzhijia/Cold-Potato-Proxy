@@ -69,7 +69,7 @@ void ProxyServer::Listen() {
 	listen_addr.sin_port = htons(mPort);
 	listen_addr.sin_addr.s_addr = INADDR_ANY;
 
-	if (bind(mListenFD, reinterpret_cast<sockaddr*>(&listen_addr), sizeof(listen_addr)) == -1)
+	if (::bind(mListenFD, reinterpret_cast<sockaddr*>(&listen_addr), sizeof(listen_addr)) == -1)
 	{
 		cerr << "Error binding listen socket: " << strerror(errno) << endl;
 		return;
